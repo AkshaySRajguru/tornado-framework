@@ -12,10 +12,24 @@ class ListFruitsRequestHandler(tornado.web.RequestHandler):
         self.render("index.html")
 
 
+class QueryParamRequestHandler(tornado.web.RequestHandler):
+    """
+    Accessing query parameter from url: http://localhost:8882/isEven?num=3
+    """
+    def get(self):
+        num = self.get_argument("num")
+        if num.isdigit():
+            r = "odd" if int(num) % 2 else "even"
+            self.write(f"The integer {num} is {r}")
+        else:
+            self.write(f"{num} is not a valid integer.")
+
+
 if __name__ == "__main__":
     app = tornado.web.Application([
         (r"/", BasicRequestHandler),
         (r"/fruits", ListFruitsRequestHandler),
+        (r"/isEven", QueryParamRequestHandler)
     ])
 
     port = 8882
