@@ -7,9 +7,15 @@ class BasicRequestHandler(tornado.web.RequestHandler):
         self.write("Hello, World !! this is a get request returned from BasicRequestHandler.")
 
 
+class ListFruitsRequestHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("index.html")
+
+
 if __name__ == "__main__":
     app = tornado.web.Application([
-        (r"/", BasicRequestHandler)
+        (r"/", BasicRequestHandler),
+        (r"/fruits", ListFruitsRequestHandler),
     ])
 
     port = 8882
