@@ -1,3 +1,5 @@
+import json
+
 import tornado.web
 import tornado.ioloop
 
@@ -36,12 +38,32 @@ class ResourceParamRequestHandler(tornado.web.RequestHandler):
         self.write(f"Welcome {studentName} you are viewing course {courseId}")
 
 
+class TextFileRequestHandler(tornado.web.RequestHandler):
+    def get(self):
+        fh = open("fruits_list.txt", "r")
+        fruits = fh.read().splitlines()
+        fh.close()
+        self.write(json.dumps(fruits))
+
+    def post(self):
+        """
+        tested via postman: http://localhost:8882/textFile?fruit=Lemon
+        """
+
+        fruit = self.get_argument("fruit")
+        fh = open("fruits_list.txt", "a")
+        fh.write(f"{fruit}\n")
+        fh.close()
+        self.write(json.dumps({"message": "Fruit added successfully."}))
+
+
 if __name__ == "__main__":
     app = tornado.web.Application([
         (r"/", BasicRequestHandler),
         (r"/fruits", ListFruitsRequestHandler),
         (r"/isEven", QueryParamRequestHandler),
-        (r"/students/([a-z]+)/([0-9]+)", ResourceParamRequestHandler)
+        (r"/students/([a-z]+)/([0-9]+)", ResourceParamRequestHandler),
+        (r"/textFile", TextFileRequestHandler)
     ])
 
     port = 8882
