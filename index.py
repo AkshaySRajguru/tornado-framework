@@ -4,12 +4,12 @@ import tornado.web
 import tornado.ioloop
 
 
-class BasicRequestHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write("Hello, World !! this is a get request returned from BasicRequestHandler.")
+# class BasicRequestHandler(tornado.web.RequestHandler):
+#     def get(self):
+#         self.write("Hello, World !! this is a get request returned from BasicRequestHandler.")
 
 
-class ListFruitsRequestHandler(tornado.web.RequestHandler):
+class MainRequestHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("index.html")
 
@@ -59,8 +59,7 @@ class TextFileRequestHandler(tornado.web.RequestHandler):
 
 if __name__ == "__main__":
     app = tornado.web.Application([
-        (r"/", BasicRequestHandler),
-        (r"/fruits", ListFruitsRequestHandler),
+        (r"/", MainRequestHandler),
         (r"/isEven", QueryParamRequestHandler),
         (r"/students/([a-z]+)/([0-9]+)", ResourceParamRequestHandler),
         (r"/textFile", TextFileRequestHandler)
