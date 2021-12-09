@@ -13,6 +13,14 @@ class MainRequestHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("index.html")
 
+    def post(self):
+        files = self.request.files["imgFile"]
+        for f in files:
+            fh = open(f"upload/{f.filename}", "wb")
+            fh.write(f.body)
+            fh.close()
+        self.write(f"http://localhost:8882/upload/{f.filename}")
+
 
 class QueryParamRequestHandler(tornado.web.RequestHandler):
     """
@@ -57,12 +65,26 @@ class TextFileRequestHandler(tornado.web.RequestHandler):
         self.write(json.dumps({"message": "Fruit added successfully."}))
 
 
+# class UploadImgHandler(tornado.web.RequestHandler):
+#     def post(self):
+#         files = self.request.files["fileImage"]
+#         for f in files:
+#             fh = open(f"upload/{f.filename}", "wb")
+#             fh.write(f.body)
+#             fh.close()
+#         self.write(f"http://localhost:8882/upload/{f.filename}")
+#
+#     def get(self):
+#         self.render("index.html")
+
+
 if __name__ == "__main__":
     app = tornado.web.Application([
         (r"/", MainRequestHandler),
         (r"/isEven", QueryParamRequestHandler),
         (r"/students/([a-z]+)/([0-9]+)", ResourceParamRequestHandler),
-        (r"/textFile", TextFileRequestHandler)
+        (r"/textFile", TextFileRequestHandler),
+        ("/upload/(.*)", tornado.web.StaticFileHandler, {'path': 'upload'})
     ])
 
     port = 8882

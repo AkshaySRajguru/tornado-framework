@@ -13,6 +13,13 @@
     <input type = 'text' id = 'txtFruit'>
     <button id = 'btnAdd'>Add Fruit</button>
 
+    <div>
+        <form method = "post" action = "/" enctype="multipart/form-data">
+        <input type = 'file' name = 'imgFile' accept=".jpg, .png">
+        <input type="submit" value="upload">
+        </form>
+    </div>
+
     <script>
         const lstFruit = document.getElementById("lstFruit")
         const addFruit = document.getElementById("btnAdd")
